@@ -73,6 +73,7 @@ class RegisterController extends Controller
             'contactnum' => $data['contactnum'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'slug' => uniqid(),
         ]);
     }
 }
