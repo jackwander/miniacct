@@ -21,6 +21,7 @@ const toast = swal.mixin({
   timer: 3000
 });
 
+window.toast = toast;
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -28,6 +29,7 @@ const toast = swal.mixin({
  */
 
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
+Vue.component('accounts', require('./components/Accounts.vue'));
 Vue.component('v-select', vSelect)
 const app = new Vue({
     el: '#app'
