@@ -13,9 +13,11 @@ class AccountTransactionsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+      $at = at::where('acct_id',$request->acct_id)
+      ->orderBy('date')->get();
+      return atr::collection($at);
     }
 
     /**
