@@ -9,7 +9,7 @@
       @if(Auth::guard('web')->check())
         @include('include.navbar')
       @else
-        @include('include.guest-navbar')
+        @include('include.navbar')
       @endif
         <!-- /.navbar -->
 
