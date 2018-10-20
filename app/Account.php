@@ -14,8 +14,13 @@ class Account extends Model
     protected $fillable = [
         'acct_name','acct_detail','user_id','slug',
     ];
-    public function medsubclass() {
-        return $this->hasMany('App\MedicineSubClassification');
+
+    public function transactions() {
+        return $this->hasMany('App\AccountTransaction');
+    }
+
+    public function user() {
+        return $this->belongsTo('App\UserHandler');
     }
 }
 
