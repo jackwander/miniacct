@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\UserHandler as User;
 use App\Account;
 use App\Http\Resources\AccountsResource;
+use Illuminate\Support\Facades\Session;
 
 class AccountsController extends Controller
 {
@@ -13,10 +15,11 @@ class AccountsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
-    {
-      $accounts = Account::where('user_id',$request->user_id)
-      ->orderBy('acct_name')->get();
+    public function index($id)
+    { 
+      $user = User::findOrFail($id);
+      $accounts = Account::where('user_id',$user->id)
+      ->orderBy('acct_name')->paginate(5);
       return AccountsResource::collection($accounts);
     }
 

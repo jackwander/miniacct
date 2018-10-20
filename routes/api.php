@@ -20,10 +20,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::prefix('user')->group(function() {
   Route::prefix('accounts')->group(function() {
-    Route::post('/', 'AccountsController@index');
+    Route::get('/{slug}', 'AccountsController@index');
     Route::post('/store', 'AccountsController@store');
-    Route::get('/{id}', 'AccountsController@show');
-    Route::put('/{id}', 'AccountsController@update');
+    Route::get('/at/{id}', 'AccountsController@show');
+    Route::put('/at/{id}', 'AccountsController@update');
     Route::delete('/delete/{id}', 'AccountsController@destroy');
 
     Route::prefix('{id}')->group(function() {

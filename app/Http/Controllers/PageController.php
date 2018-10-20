@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class PageController extends Controller
 {
@@ -23,6 +25,9 @@ class PageController extends Controller
      */
     public function index()
     {
+      if (session('user-id') == null) {
+        Session::put('user-id',Auth::user()->id);
+      }
         return view('dashboard');
     }
 
