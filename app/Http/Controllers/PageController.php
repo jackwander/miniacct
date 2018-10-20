@@ -25,4 +25,9 @@ class PageController extends Controller
     {
         return view('dashboard');
     }
+
+    public function accounts()
+    {
+      return view('accounts.index');
+    }
 }
