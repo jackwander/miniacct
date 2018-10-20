@@ -19,7 +19,8 @@ class CreateAccountTransactionsTable extends Migration
             $table->integer('deposit')->nullable();
             $table->integer('withdraw')->nullable();
             $table->string('detail')->nullable();
-            $table->integer('acct_id');
+            $table->integer('acct_id')->unsigned();
+            $table->foreign('acct_id')->references('acct_id')->on('accounts')->onDelete('cascade');
             $table->timestamps();
         });
     }
