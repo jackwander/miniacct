@@ -12,7 +12,7 @@ class UserHandler extends Model
     public $timestamps = true;
 
     protected $fillable = [
-        'fname','mname','lname','contactnum', 'email', 'password',
+        'fname','mname','lname','contactnum', 'email', 'password', 'gender'
     ];
 
     /**
