@@ -9,6 +9,18 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
+import swal from 'sweetalert2';
+window.swal = swal;
+
+// import vSelect from 'vue-select';
+
+const toast = swal.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 3000
+});
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
