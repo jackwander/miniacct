@@ -23,6 +23,7 @@ Route::prefix('user')->group(function() {
     Route::post('/', 'AccountsController@index');
     Route::post('/store', 'AccountsController@store');
     Route::get('/{id}', 'AccountsController@show');
+    Route::put('/{id}', 'AccountsController@update');
     Route::delete('/delete/{id}', 'AccountsController@destroy');
   });
 });
