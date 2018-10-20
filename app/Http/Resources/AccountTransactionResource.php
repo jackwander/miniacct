@@ -18,8 +18,8 @@ class AccountTransactionResource extends JsonResource
             "at_id" => $this->at_id,
             "acct_id" => $this->acct_id,
             "date" => $this->date,
-            "amount" => $this->amount,
-            "type" => $this->type,
+            "deposit" => $this->deposit,
+            "withdraw" => $this->withdraw,
             "detail" => $this->detail,
         ];
     }
