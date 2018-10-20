@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\AccountTransaction as at;
+use App\Http\Resources\AccountTransactionResource as atr;
 
 class AccountTransactionsController extends Controller
 {
@@ -34,7 +36,20 @@ class AccountTransactionsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $at = new at;
+        $at->date = $request->date;
+        if ($request->type == "Deposit") {
+            $at->deposit = $request->amount;
+        } else {
+            $at->withdraw = $request->amount;
+        }
+        $at->detail = $request->detail;
+        $at->acct_id = $request->acct_id;
+
+        if ($at->save()) {
+          return new atr($at);
+        }
     }
 
     /**
