@@ -12,7 +12,7 @@ window.Vue = require('vue');
 import swal from 'sweetalert2';
 window.swal = swal;
 
-// import vSelect from 'vue-select';
+import vSelect from 'vue-select';
 
 const toast = swal.mixin({
   toast: true,
@@ -28,7 +28,7 @@ const toast = swal.mixin({
  */
 
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
-
+Vue.component('v-select', vSelect)
 const app = new Vue({
     el: '#app'
 });
