@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Account;
+use App\Http\Resources\AccountsResource;
 
 class AccountsController extends Controller
 {
@@ -11,9 +13,11 @@ class AccountsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+      $accounts = Account::where('user_id',$request->user_id)
+      ->orderBy('acct_name')->get();
+      return AccountsResource::collection($accounts);
     }
 
     /**
@@ -34,7 +38,22 @@ class AccountsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      $check = Account::where([
+        ['acct_name','=',$request->acct_name],
+        ['user_id','=',$request->user_id]
+      ])->count();
+
+      if ($check==0) {
+        $acct = new Account;
+        $acct->acct_name = $request->acct_name;
+        $acct->acct_detail = $request->acct_detail;
+        $acct->user_id = $request->user_id;
+        $acct->slug = uniqid();
+
+        if ($acct->save()) {
+          return new AccountsResource($acct);
+        }
+      }
     }
 
     /**
@@ -45,7 +64,8 @@ class AccountsController extends Controller
      */
     public function show($id)
     {
-        //
+      $accounts = Account::where('acct_id',$id)->get();
+      return AccountsResource::collection($accounts);
     }
 
     /**
@@ -68,7 +88,12 @@ class AccountsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $acct = Account::findOrFail($id);
+        $acct->acct_name = $request->acct_name;
+        $acct->acct_detail = $request->acct_detail;
+        if ($acct->save()) {
+            return new AccountsResource($acct);
+        }
     }
 
     /**
@@ -79,6 +104,10 @@ class AccountsController extends Controller
      */
     public function destroy($id)
     {
-        //
+      $acct = Account::findOrFail($id);
+
+      if ($acct->delete()) {
+        return new AccountsResource($acct);
+      }
     }
-}
+  }
