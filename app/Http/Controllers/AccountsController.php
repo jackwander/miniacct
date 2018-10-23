@@ -19,7 +19,7 @@ class AccountsController extends Controller
     { 
       $user = User::findOrFail($id);
       $accounts = Account::where('user_id',$user->id)
-      ->orderBy('acct_name')->paginate(5);
+      ->orderBy('acct_name')->paginate(10);
       return AccountsResource::collection($accounts);
     }
 
@@ -56,6 +56,12 @@ class AccountsController extends Controller
         if ($acct->save()) {
           return new AccountsResource($acct);
         }
+      } else {
+        $returnData = array(
+            'status' => 'error',
+            'message' => 'Account Name is already recorded'
+        );
+        return response()->json($returnData);
       }
     }
 
