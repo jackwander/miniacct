@@ -11,12 +11,12 @@
         <table class="table">
           <thead>
             <th>Account Name</th>
-            <th>Account Detail</th>
+            <th></th>
           </thead>
           <tbody>
             <tr v-for="account in accounts" v-bind:key="account.acct_id">
               <td><a href="#">{{account.acct_name}}</a></td>
-              <td>{{account.acct_detail}}</td>
+              <td><button class="btn btn-danger btn-sm" @click="deleteAccount(account.acct_id)"><i class="fas fa-trash"></i></button></td>
             </tr>
           </tbody>
         </table>
@@ -104,12 +104,11 @@
 
           axios.post('/api/user/accounts/store', formData)
           .then(function (response) {
-            console.log(response.data.status);
             if (response.data.status != "error") {
               swal({
                 type: 'success',
                 title: 'Congrats',
-                text: 'Your account is added!',
+                text: 'Your account ' + response.data.data.acct_name + ' is added!',
               });
               vm.fetchAccounts();
             } else {
@@ -124,6 +123,52 @@
             console.log(error);
           });
         }
+      },
+      deleteAccount(id) {
+        let vm = this;
+
+        const swalWithBootstrapButtons = swal.mixin({
+          confirmButtonClass: 'btn btn-success mr-2',
+          cancelButtonClass: 'btn btn-danger',
+          buttonsStyling: false,
+        })
+
+        swalWithBootstrapButtons({
+          title: 'Are you sure?',
+          text: "You won't be able to revert this!",
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Yes, delete it!',
+          cancelButtonText: 'No, cancel!',
+        }).then((result) => {
+          if (result.value) {
+            axios({
+              method: 'delete',
+              url: `/api/user/accounts/delete/${id}`,
+            })
+            .then(function (response) {
+              swalWithBootstrapButtons(
+                'Deleted!',
+                'Your account ' + response.data.data.acct_name + ' has been deleted.',
+                'success'
+              );
+              vm.fetchAccounts();
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+
+          } else if (
+            // Read more about handling dismissals
+            result.dismiss === swal.DismissReason.cancel
+          ) {
+            swalWithBootstrapButtons(
+              'Cancelled',
+              'The Account is safe :)',
+              'error'
+            )
+          }
+        });
       }
     }
   }
