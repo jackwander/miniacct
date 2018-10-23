@@ -26,11 +26,9 @@ Route::prefix('user')->group(function() {
     Route::put('/at/{id}', 'AccountsController@update');
     Route::delete('/delete/{id}', 'AccountsController@destroy');
 
-    Route::prefix('{id}')->group(function() {
-      Route::prefix('transaction')->group(function() {
-        Route::post('/', 'AccountTransactionsController@index');
-        Route::post('/store', 'AccountTransactionsController@store');
-      });
+    Route::prefix('transactions')->group(function() {
+      Route::post('/', 'AccountTransactionsController@index');
+      Route::post('/store', 'AccountTransactionsController@store');
     });
 
   });
