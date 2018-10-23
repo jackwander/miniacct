@@ -87,6 +87,7 @@
           '<input id="swal-input1" class="swal2-input" placeholder="Account Name">' +
           '<input id="swal-input2" class="swal2-input" placeholder="Account Detail">',
           focusConfirm: false,
+          showCancelButton: true,
           preConfirm: () => {
             return [
             document.getElementById('swal-input1').value,
@@ -103,12 +104,21 @@
 
           axios.post('/api/user/accounts/store', formData)
           .then(function (response) {
-            swal({
-              type: 'success',
-              title: 'Congrats',
-              text: 'Your account is added!',
-            });
-            vm.fetchAccounts();
+            console.log(response.data.status);
+            if (response.data.status != "error") {
+              swal({
+                type: 'success',
+                title: 'Congrats',
+                text: 'Your account is added!',
+              });
+              vm.fetchAccounts();
+            } else {
+              swal({
+                type: 'error',
+                title: 'Oppss',
+                text: response.data.message,
+              });
+            }
           })
           .catch(function (error) {
             console.log(error);
