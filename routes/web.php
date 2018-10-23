@@ -21,4 +21,5 @@ Route::get('/', 'PageController@index')->name('dashboard');
 
 Route::prefix('accounts')->group(function() {
   Route::get('/', 'PageController@accounts')->name('show.accounts');
+  Route::get('/{slug}/', 'PageController@viewAccount')->name('view.account');
 });
