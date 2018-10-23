@@ -15,7 +15,7 @@
           </thead>
           <tbody>
             <tr v-for="account in accounts" v-bind:key="account.acct_id">
-              <td><a href="#">{{account.acct_name}}</a></td>
+              <td><a :href="'/accounts/' + account.slug">{{account.acct_name}}</a></td>
               <td><button class="btn btn-danger btn-sm" @click="deleteAccount(account.acct_id)"><i class="fas fa-trash"></i></button></td>
             </tr>
           </tbody>
