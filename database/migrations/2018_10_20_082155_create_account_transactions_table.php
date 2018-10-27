@@ -16,8 +16,8 @@ class CreateAccountTransactionsTable extends Migration
         Schema::create('account_transactions', function (Blueprint $table) {
             $table->increments('at_id');
             $table->date('date');
-            $table->integer('deposit')->default(0);
-            $table->integer('withdraw')->default(0);
+            $table->integer('amount')->default(0);
+            $table->string('type')->nullable();
             $table->string('detail')->nullable();
             $table->integer('acct_id')->unsigned();
             $table->foreign('acct_id')->references('acct_id')->on('accounts')->onDelete('cascade');
