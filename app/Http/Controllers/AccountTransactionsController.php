@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\AccountTransaction as at;
+use App\AccountBalance as ab;
 use App\Http\Resources\AccountTransactionResource as atr;
 
 class AccountTransactionsController extends Controller
@@ -16,7 +17,7 @@ class AccountTransactionsController extends Controller
     public function index($acct_id)
     {
       $at = at::where('acct_id',$acct_id)
-      ->orderBy('date')->get();
+      ->orderBy('date')->paginate(10);
       return atr::collection($at);
     }
 
@@ -38,16 +39,26 @@ class AccountTransactionsController extends Controller
      */
     public function store(Request $request)
     {
+        $bal = ab::firstOrCreate(
+            ['acct_id' => $request->acct_id]
+        );
 
-        $at = new at;
-        $at->date = $request->date;
-        $at->amount = $request->amount;
-        $at->type = $request->type;
-        $at->detail = $request->detail;
-        $at->acct_id = $request->acct_id;
+        if ($request->type == 'Deposit') {
+            $in = $bal->increment('balance',$request->amount);
+        } else {
+            $in = $bal->decrement('balance',$request->amount);
+        }
+        if ($in) {
+            $at = new at;
+            $at->date = $request->date;
+            $at->amount = $request->amount;
+            $at->type = $request->type;
+            $at->detail = $request->detail;
+            $at->acct_id = $request->acct_id;
 
-        if ($at->save()) {
-          return new atr($at);
+            if ($at->save()) {
+              return new atr($at);
+            }
         }
     }
 

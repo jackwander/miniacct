@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\UserHandler as User;
 use App\Account;
+use App\AccountBalance;
 use App\Http\Resources\AccountsResource;
 use Illuminate\Support\Facades\Session;
 
@@ -75,6 +76,15 @@ class AccountsController extends Controller
     {
       $accounts = Account::where('acct_id',$id)->get();
       return AccountsResource::collection($accounts);
+    }
+
+    public function getBalance($id)
+    {
+        $bal = AccountBalance::firstOrCreate(
+            ['acct_id' => $id]
+        );
+
+        return $bal->balance;
     }
 
     /**
