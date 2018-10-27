@@ -12,7 +12,7 @@ class AccountTransaction extends Model
     public $timestamps = true;
 
     protected $fillable = [
-      'date','ammount','type','detail','acct_id'
+      'date','amount','type','detail','acct_id'
     ];
     
     public function account() {
