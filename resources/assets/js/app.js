@@ -30,6 +30,7 @@ window.toast = toast;
 
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
 Vue.component('accounts', require('./components/Accounts.vue'));
+Vue.component('account', require('./components/Account.vue'));
 Vue.component('v-select', vSelect)
 const app = new Vue({
     el: '#app'
