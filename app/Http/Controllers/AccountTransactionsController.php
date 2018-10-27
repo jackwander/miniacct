@@ -13,9 +13,9 @@ class AccountTransactionsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index($acct_id)
     {
-      $at = at::where('acct_id',$request->acct_id)
+      $at = at::where('acct_id',$acct_id)
       ->orderBy('date')->get();
       return atr::collection($at);
     }
@@ -41,11 +41,8 @@ class AccountTransactionsController extends Controller
 
         $at = new at;
         $at->date = $request->date;
-        if ($request->type == "Deposit") {
-            $at->deposit = $request->amount;
-        } else {
-            $at->withdraw = $request->amount;
-        }
+        $at->amount = $request->amount;
+        $at->type = $request->type;
         $at->detail = $request->detail;
         $at->acct_id = $request->acct_id;
 
