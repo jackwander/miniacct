@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use App\Account;
 
 class PageController extends Controller
 {
@@ -34,5 +35,11 @@ class PageController extends Controller
     public function accounts()
     {
       return view('accounts.index');
+    }
+
+    public function viewAccount($slug)
+    {
+      $acct = Account::where('slug',$slug)->first();
+      return view('accounts.account')->with('acct',$acct);
     }
 }
