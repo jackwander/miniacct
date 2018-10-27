@@ -24,6 +24,7 @@ Route::prefix('user')->group(function() {
     Route::post('/store', 'AccountsController@store');
     Route::get('/at/{id}', 'AccountsController@show');
     Route::put('/at/{id}', 'AccountsController@update');
+    Route::get('/balance/{id}', 'AccountsController@getBalance');
     Route::delete('/delete/{id}', 'AccountsController@destroy');
 
     Route::prefix('transactions')->group(function() {
