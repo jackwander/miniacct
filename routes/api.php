@@ -27,7 +27,7 @@ Route::prefix('user')->group(function() {
     Route::delete('/delete/{id}', 'AccountsController@destroy');
 
     Route::prefix('transactions')->group(function() {
-      Route::post('/', 'AccountTransactionsController@index');
+      Route::get('/{acct_id}', 'AccountTransactionsController@index');
       Route::post('/store', 'AccountTransactionsController@store');
     });
 
