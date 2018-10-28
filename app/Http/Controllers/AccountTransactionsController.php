@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+
+use App\Account as acct;
+use App\UserHandler as uh;
 use App\AccountTransaction as at;
 use App\AccountBalance as ab;
 use App\Http\Resources\AccountTransactionResource as atr;
@@ -105,5 +109,24 @@ class AccountTransactionsController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function clearTransaction(Request $request)
+    {
+        $acct = acct::findOrFail($request->acct_id);
+
+        $user = uh::findOrFail($acct->user_id);
+
+        if (Hash::check($request->pw, $user->password)) {
+            $trans = at::where('acct_id',$request->acct_id)->delete();
+            if ($trans) {
+                $ab = ab::where('acct_id',$request->acct_id)->first();
+                $ab->balance = 0;
+                $ab->save();
+                return "Success";
+            }
+        } else {
+            return "invalid";
+        }
     }
 }

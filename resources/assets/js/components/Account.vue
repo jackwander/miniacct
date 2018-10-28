@@ -31,14 +31,19 @@
           </div>
         </div>
         <div class="card-footer">
-          <nav aria-label="Page navigation example">
-            <ul class="pagination">
-              <li v-bind:class="[{disabled: !pagination.prev_page_url}]" class="page-item"><button class="page-link" href="#" @click="fetchTransactions(pagination.prev_page_url)">Previous</button></li>
-              <li class="page-item disabled"><a class="page-link text-dark" href="#">{{pagination.current_page}} of {{pagination.last_page}}</a></li>
-              <li v-bind:class="[{disabled: !pagination.next_page_url}]" class="page-item">
-                <button class="page-link" href="#" @click="fetchTransactions(pagination.next_page_url)">Next</button></li>
-              </ul>
-          </nav>
+          <div class="float-lg-left">
+            <nav aria-label="Page navigation example">
+              <ul class="pagination">
+                <li v-bind:class="[{disabled: !pagination.prev_page_url}]" class="page-item"><button class="page-link" href="#" @click="fetchTransactions(pagination.prev_page_url)">Previous</button></li>
+                <li class="page-item disabled"><a class="page-link text-dark" href="#">{{pagination.current_page}} of {{pagination.last_page}}</a></li>
+                <li v-bind:class="[{disabled: !pagination.next_page_url}]" class="page-item">
+                  <button class="page-link" href="#" @click="fetchTransactions(pagination.next_page_url)">Next</button></li>
+                </ul>
+            </nav>
+          </div>
+          <div class="float-lg-right">
+            <a href="#" @click="clearTransactions()">Clear Transactions</a>
+          </div>
         </div>
       </div>
     </div>
@@ -97,6 +102,74 @@
           .then(function () {
             // always executed
           }); 
+      },
+      async clearTransactions() {
+        let vm = this;
+        let formData = new FormData();
+
+        const {value: password} = await swal({
+          title: 'Please enter your password to confirm',
+          input: 'password',
+          inputPlaceholder: 'Enter your password',
+          inputAttributes: {
+            autocapitalize: 'off',
+            autocorrect: 'off'
+          }
+        });
+
+        if (password) {
+          const swalWithBootstrapButtons = swal.mixin({
+            confirmButtonClass: 'btn btn-success mr-2',
+            cancelButtonClass: 'btn btn-danger',
+            buttonsStyling: false,
+          })
+
+          swalWithBootstrapButtons({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, clear it!',
+            cancelButtonText: 'No, cancel!',
+          }).then((result) => {
+            if (result.value) {
+                formData.append('acct_id', vm.acct_id);
+                formData.append('pw', password);
+
+                axios.post('/api/user/accounts/transactions/clearTransaction', formData)
+                .then(function (response) {
+                  if (response.data != 'invalid') {
+                    swal({
+                      type: 'success',
+                      title: 'Success',
+                      text: 'Your Account Transactions is successfully cleared!',
+                    });
+                    vm.fetchTransactions();
+                    vm.fetchBalance();
+                  } else {
+                    swal({
+                      type: 'error',
+                      title: 'Incorrect Password',
+                      text: 'Please enter your password correctly',
+                    });
+                  }
+                })
+                .catch(function (error) {
+                  console.log(error);
+                });
+
+            } else if (
+            // Read more about handling dismissals
+            result.dismiss === swal.DismissReason.cancel
+            ) {
+              swalWithBootstrapButtons(
+                'Cancelled',
+                'Your Account Transactions is safe :)',
+                'error'
+                )
+            }
+          });
+        }
       },
 
       async addForm() {

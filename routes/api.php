@@ -30,6 +30,7 @@ Route::prefix('user')->group(function() {
     Route::prefix('transactions')->group(function() {
       Route::get('/{acct_id}', 'AccountTransactionsController@index');
       Route::post('/store', 'AccountTransactionsController@store');
+      Route::post('/clearTransaction', 'AccountTransactionsController@clearTransaction');
     });
 
   });
