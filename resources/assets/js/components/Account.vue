@@ -4,7 +4,7 @@
       <div class="card">
         <div class="card-header">
           <div class="float-left">
-            Balance: <b>{{balance}}</b>
+            Balance: <b>{{balance | toCurrency}}</b>
           </div>
           <div class="float-right">
             <a href="#" @click="addForm()"> <i class="fas fa-plus"></i> </a>
@@ -21,8 +21,8 @@
               </thead>
               <tbody>
                <tr v-for="trans in transactions" v-bind:key="trans.at_id">
-                  <td>{{trans.date}}</td>
-                  <td>{{trans.amount}}</td>
+                  <td>{{trans.date | formatDate}}</td>
+                  <td>{{trans.amount | toCurrency}}</td>
                   <td>{{trans.type}}</td>
                   <td>{{trans.detail}}</td>
                 </tr>
@@ -112,8 +112,8 @@
         const {value: formValues} = await swal({
           title: 'Add Transaction',
           html:
-          '<input  type="date" id="swal-input1" max="'+today+'"class="swal2-input">' +
-          '<input  type="text" min="0" id="swal-input2" class="swal2-input amount" placeholder="Amount">' +
+          '<input  type="date" id="swal-input1" max="'+today+'" class="swal2-input">' +
+          '<input  type="number" min="0" id="swal-input2" class="swal2-input" placeholder="Amount">' +
           '<select id="swal-input3" class="swal2-input"><option>Deposit</option><option>Withdraw</option></select>'+
           '<input  id="swal-input4" class="swal2-input" placeholder="Detail">',
           focusConfirm: false,
