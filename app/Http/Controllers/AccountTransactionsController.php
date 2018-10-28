@@ -17,7 +17,7 @@ class AccountTransactionsController extends Controller
     public function index($acct_id)
     {
       $at = at::where('acct_id',$acct_id)
-      ->orderBy('date')->paginate(10);
+      ->orderBy('date','DESC')->paginate(5);
       return atr::collection($at);
     }
 
